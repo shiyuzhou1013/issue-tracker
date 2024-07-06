@@ -4,6 +4,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Tech Stack
 
+## Libraries Used
+
 ## Getting Started
 
 First, run the development server:
