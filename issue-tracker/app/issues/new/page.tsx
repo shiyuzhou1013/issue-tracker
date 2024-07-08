@@ -17,10 +17,13 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SimpleMDE from "react-simplemde-editor";
 import z from "zod";
+import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
+  const [isSubmitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
   const {
@@ -32,9 +35,11 @@ const NewIssuePage = () => {
 
   const onSubmit: SubmitHandler<IssueForm> = async (data) => {
     try {
+      setSubmitting(true);
       await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error) {
+      setSubmitting(false);
       setError("An unexpected error occurred.");
     }
   };
@@ -53,11 +58,7 @@ const NewIssuePage = () => {
         <TextField.Root>
           <TextFieldInput placeholder="Title" {...register("title")} />
         </TextField.Root>
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -66,11 +67,11 @@ const NewIssuePage = () => {
           )}
         />
         {errors.description && (
-          <Text color="red" as="p">
-            {errors.description.message}
-          </Text>
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
         )}
-        <Button>Submit</Button>
+        <Button disabled={isSubmitting}>
+          Submit {isSubmitting && <Spinner></Spinner>}
+        </Button>
       </form>
     </div>
   );
