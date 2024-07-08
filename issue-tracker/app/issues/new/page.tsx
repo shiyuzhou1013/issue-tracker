@@ -9,10 +9,14 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
 import z from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -24,6 +28,7 @@ const NewIssuePage = () => {
     control,
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<IssueForm>({ resolver: zodResolver(createIssueSchema) });
 
@@ -31,6 +36,7 @@ const NewIssuePage = () => {
     try {
       setSubmitting(true);
       await axios.post("/api/issues", data);
+      reset();
       router.push("/issues");
     } catch (error) {
       setSubmitting(false);
