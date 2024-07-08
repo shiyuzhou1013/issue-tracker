@@ -2,13 +2,7 @@
 
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
-import {
-  Button,
-  Callout,
-  Text,
-  TextField,
-  TextFieldInput,
-} from "@radix-ui/themes";
+import { Button, Callout, TextField, TextFieldInput } from "@radix-ui/themes";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { createIssueSchema } from "@/app/validationSchemas";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
