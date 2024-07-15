@@ -1,8 +1,14 @@
 import { IssueStatusBadge } from "@/app/components";
 import { Issue, issue_status } from "@prisma/client";
-import { Table } from "@radix-ui/themes";
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { Flex, Table } from "@radix-ui/themes";
 import { default as Link, default as NextLink } from "next/link";
 import { BiSort } from "react-icons/bi";
+import { FaSortDown } from "react-icons/fa";
+import { FaSortUp } from "react-icons/fa";
+import { TiArrowUnsorted } from "react-icons/ti";
+import { TiArrowSortedUp } from "react-icons/ti";
+import { TiArrowSortedDown } from "react-icons/ti";
 
 export interface IssueQuery {
   status: issue_status;
@@ -39,8 +45,16 @@ const IssueTable = ({ searchParams, issues }: Props) => {
               >
                 {column.label}
               </NextLink>
-              {column.value === searchParams.orderBy && (
-                <BiSort className="inline" />
+              {column.value === searchParams.orderBy &&
+                searchParams.orderDirection === "asc" && (
+                  <TiArrowSortedUp className="inline" color="#E93D82" />
+                )}
+              {column.value === searchParams.orderBy &&
+                searchParams.orderDirection === "desc" && (
+                  <TiArrowSortedDown className="inline" color="#E93D82" />
+                )}
+              {!searchParams.orderBy && (
+                <TiArrowUnsorted className="inline" color="gray" />
               )}
             </Table.ColumnHeaderCell>
           ))}
