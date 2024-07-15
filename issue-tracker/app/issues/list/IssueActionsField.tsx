@@ -1,14 +1,16 @@
-import { Button } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
+import IssueStatusSelector from "./IssueStatusSelector";
 
 const CreateIssueBar = () => {
   return (
-    <div className="mb-5">
+    <Flex mb="5" justify="between">
+      <IssueStatusSelector />
       <Button>
         <Link href="/issues/new">Create New Issue</Link>
       </Button>
-    </div>
+    </Flex>
   );
 };
 
