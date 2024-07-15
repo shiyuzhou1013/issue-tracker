@@ -6,12 +6,14 @@ import React, { useState } from "react";
 import { Issue, issue_status } from "@prisma/client";
 import NextLink from "next/link";
 import { BiSort } from "react-icons/bi";
+import Pagination from "@/app/components/Pagination";
 
 interface Props {
   searchParams: {
     status: issue_status;
     orderBy: keyof Issue;
     orderDirection: "asc" | "desc";
+    page: string;
   };
 }
 
@@ -39,9 +41,18 @@ const issuesPage = async ({ searchParams }: Props) => {
     ? { [searchParams.orderBy]: searchParams.orderDirection }
     : undefined;
 
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
   const issues = await prisma.issue.findMany({
     where: { status: status },
     orderBy: orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  const issueCount = await prisma.issue.count({
+    where: { status },
   });
 
   return (
@@ -91,6 +102,11 @@ const issuesPage = async ({ searchParams }: Props) => {
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        itemCount={issueCount}
+        pageSize={pageSize}
+        currentPage={page}
+      />
     </div>
   );
 };
