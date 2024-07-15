@@ -1,13 +1,29 @@
 import { IssueStatusBadge, Link } from "@/app/components";
 import { Table } from "@radix-ui/themes";
-import CreateIssueBar from "./IssueActionsField";
+import IssueActionsField from "./IssueActionsField";
 import prisma from "@/prisma/client";
-import React from "react";
-import { issue_status } from "@prisma/client";
+import React, { useState } from "react";
+import { Issue, issue_status } from "@prisma/client";
+import NextLink from "next/link";
+import { BiSort } from "react-icons/bi";
 
 interface Props {
-  searchParams: { status: issue_status };
+  searchParams: {
+    status: issue_status;
+    orderBy: keyof Issue;
+    orderDirection: "asc" | "desc";
+  };
 }
+
+const columns: { label: string; value: keyof Issue; className?: string }[] = [
+  { label: "Issue", value: "title" },
+  { label: "Status", value: "status", className: "hidden md:table-cell" },
+  {
+    label: "Created At",
+    value: "createdAt",
+    className: "hidden md:table-cell",
+  },
+];
 
 const issuesPage = async ({ searchParams }: Props) => {
   const statuses = Object.values(issue_status);
@@ -15,23 +31,46 @@ const issuesPage = async ({ searchParams }: Props) => {
     ? searchParams.status
     : undefined;
 
+  const orderDirection = searchParams.orderDirection === "asc" ? "desc" : "asc";
+
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: searchParams.orderDirection }
+    : undefined;
+
   const issues = await prisma.issue.findMany({
     where: { status: status },
+    orderBy: orderBy,
   });
 
   return (
     <div>
-      <CreateIssueBar />
+      <IssueActionsField />
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Status
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Created At
-            </Table.ColumnHeaderCell>
+            {columns.map((column) => (
+              <Table.ColumnHeaderCell
+                key={column.value}
+                className={column.className}
+              >
+                <NextLink
+                  href={{
+                    query: {
+                      ...searchParams,
+                      orderBy: column.value,
+                      orderDirection,
+                    },
+                  }}
+                >
+                  {column.label}
+                </NextLink>
+                {column.value === searchParams.orderBy && (
+                  <BiSort className="inline" />
+                )}
+              </Table.ColumnHeaderCell>
+            ))}
           </Table.Row>
         </Table.Header>
 

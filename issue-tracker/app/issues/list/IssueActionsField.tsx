@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import IssueStatusSelector from "./IssueStatusSelector";
 
-const CreateIssueBar = () => {
+const IssueActionsField = () => {
   return (
     <Flex mb="5" justify="between">
       <IssueStatusSelector />
@@ -14,4 +14,4 @@ const CreateIssueBar = () => {
   );
 };
 
-export default CreateIssueBar;
+export default IssueActionsField;
