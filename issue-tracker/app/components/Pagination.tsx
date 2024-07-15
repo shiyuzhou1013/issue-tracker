@@ -8,6 +8,7 @@ import {
 } from "@radix-ui/react-icons";
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
+import { PerformanceResourceTiming } from "perf_hooks";
 
 interface Props {
   itemCount: number;
@@ -20,7 +21,6 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
   const searchParams = useSearchParams();
 
   const pageCount = Math.ceil(itemCount / pageSize);
-  if (pageCount <= 1) return null;
 
   const changePage = (page: number) => {
     const params = new URLSearchParams(searchParams);
@@ -31,7 +31,9 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
   return (
     <Flex gap="3" align="center">
       <Text size="2">
-        Page {currentPage} of {pageCount}
+        {currentPage * pageSize < itemCount
+          ? `${currentPage * pageSize} of ${itemCount}`
+          : `${itemCount} of ${itemCount}`}
       </Text>
       <Button
         color="gray"

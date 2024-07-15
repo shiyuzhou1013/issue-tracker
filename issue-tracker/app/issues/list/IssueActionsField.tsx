@@ -5,8 +5,7 @@ import IssueStatusSelector from "./IssueStatusSelector";
 
 const IssueActionsField = () => {
   return (
-    <Flex justify="between">
-      <IssueStatusSelector />
+    <Flex justify="end">
       <Button>
         <Link href="/issues/new">Create New Issue</Link>
       </Button>
