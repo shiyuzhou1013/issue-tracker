@@ -1,7 +1,14 @@
 "use client";
 
 import { Card } from "@radix-ui/themes";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface Props {
   open: number;
@@ -20,7 +27,7 @@ const IssueChart = ({ open, inProgress, closed }: Props) => {
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>
           <XAxis dataKey="label" />
-          <YAxis />
+          <Tooltip />
           <Bar
             dataKey="value"
             barSize={60}

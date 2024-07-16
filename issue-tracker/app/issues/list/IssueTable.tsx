@@ -1,5 +1,5 @@
 import { IssueStatusBadge } from "@/app/components";
-import { Issue, issue_status } from "@prisma/client";
+import { Issue, issue_status, User } from "@prisma/client";
 import { Table } from "@radix-ui/themes";
 import { default as Link, default as NextLink } from "next/link";
 import {
@@ -15,9 +15,13 @@ export interface IssueQuery {
   page: string;
 }
 
+type IssueWithAssignee = Issue & {
+  assignedToUser: User | null;
+};
+
 interface Props {
   searchParams: IssueQuery;
-  issues: Issue[];
+  issues: IssueWithAssignee[];
 }
 
 const IssueTable = ({ searchParams, issues }: Props) => {
@@ -73,10 +77,13 @@ const IssueTable = ({ searchParams, issues }: Props) => {
               <div className="block md:hidden">{issue.status}</div>
             </Table.Cell>
             <Table.Cell className="hidden md:table-cell">
-              <IssueStatusBadge status={issue.status} />
+              {issue.createdAt.toDateString()}
             </Table.Cell>
             <Table.Cell className="hidden md:table-cell">
-              {issue.createdAt.toDateString()}
+              {issue.assignedToUser ? issue.assignedToUser.name : ""}
+            </Table.Cell>
+            <Table.Cell className="hidden md:table-cell">
+              <IssueStatusBadge status={issue.status} />
             </Table.Cell>
           </Table.Row>
         ))}
@@ -87,12 +94,17 @@ const IssueTable = ({ searchParams, issues }: Props) => {
 
 const columns: { label: string; value: keyof Issue; className?: string }[] = [
   { label: "Issue", value: "title" },
-  { label: "Status", value: "status", className: "hidden md:table-cell" },
   {
     label: "Created At",
     value: "createdAt",
     className: "hidden md:table-cell",
   },
+  {
+    label: "Assignee",
+    value: "assignedToUserId",
+    className: "hidden md:table-cell",
+  },
+  { label: "Status", value: "status", className: "hidden md:table-cell" },
 ];
 
 export const columnNames = columns.map((column) => column.value);
