@@ -1,7 +1,5 @@
 import { Button, Flex } from "@radix-ui/themes";
 import Link from "next/link";
-import React from "react";
-import IssueStatusSelector from "./IssueStatusSelector";
 
 const IssueActionsField = () => {
   return (

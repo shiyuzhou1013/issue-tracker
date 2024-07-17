@@ -3,7 +3,6 @@
 import { Issue, issue_status } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import axios from "axios";
-import React from "react";
 import toast from "react-hot-toast";
 
 const ChangeStatusSelection = ({ issue }: { issue: Issue }) => {
@@ -44,8 +43,7 @@ const ChangeStatusSelection = ({ issue }: { issue: Issue }) => {
       defaultValue={issue.status || ""}
       onValueChange={handleStatusValueChange}
     >
-      {/* @ts-ignore */}
-      <Select.Trigger placeholder="Change status..." />
+      <Select.Trigger />
       <Select.Content>
         <Select.Group>
           {issueStatuses?.map((issueStatus) => (

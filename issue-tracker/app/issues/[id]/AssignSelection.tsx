@@ -46,8 +46,7 @@ const AssignSelection = ({ issue }: { issue: Issue }) => {
         defaultValue={issue.assignedToUserId || ""}
         onValueChange={handleAssignValueChange}
       >
-        {/* @ts-ignore */}
-        <Select.Trigger placeholder="Assigning..." />
+        <Select.Trigger />
         <Select.Content>
           <Select.Group>
             <Select.Label>Sugesstions</Select.Label>
