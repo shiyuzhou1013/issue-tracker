@@ -1,7 +1,7 @@
 "use client";
 
 import { Skeleton } from "@/app/components";
-import { Issue, User } from "@prisma/client";
+import { Issue, issue_status, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -18,6 +18,7 @@ const AssignSelection = ({ issue }: { issue: Issue }) => {
     axios
       .patch("/api/issues/" + issue.id, {
         assignedToUserId: userId || null,
+        status: issue_status.IN_PROGRESS,
       })
       .catch(() =>
         toast.error("Changes could not be saved", {
