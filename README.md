@@ -20,8 +20,7 @@ Copy the generated encoded string and set the NEXTAUTH_SECRET
 ```bash
 NEXTAUTH_SECRET="your_generated_encoded_string"
 ```
-3. GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
-You need to set up OAuth on Google Cloud Platform to get a Client ID and Secret.
+3. GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET - You need to set up OAuth on Google Cloud Platform to get a Client ID and Secret.
 
 ## Getting Started
 1. Run "npm install" to install the dependencies.
